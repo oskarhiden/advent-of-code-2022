@@ -6,7 +6,7 @@ with open('dec9-input.txt') as f:
 data = [x.strip().split(' ') for x in data]
 
 
-test_data = True
+test_data = False
 # testa data
 if test_data:
     data = [
@@ -20,7 +20,8 @@ if test_data:
     'U 20'
     ]
     data = [x.split(' ') for x in data]
-    print(data[:3])
+    #print(data[:3])
+    print('Test data used')
 
 
 def vizulize(rope, grid_size):
@@ -30,18 +31,30 @@ def vizulize(rope, grid_size):
     print(grid)
 
 move_def = np.array([
-    [0,0,0],
-    [0,0,0],
-    [0,0,0]
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0]
+    ])
+move_def = np.array([
+    [(-1,-1), (-1,-1), (-1,0), (-1,1), (-1,1)],
+    [(-1,-1), (0,0), (0,0), (0,0), (-1,1)],
+    [(0,-1), (0,0), (0,0), (0,0), (0,1)],
+    [(1,-1), (0,0), (0,0), (0,0), (1,1)],
+    [(1,-1), (1,-1), (1,0), (1,1) ,(1,1)]
     ])
 def check_t(pos_h, pos_t):
     #x, y = pos_t
     x = pos_h[0]-pos_t[0]
     y = pos_h[1]-pos_t[1]
+    #print(x+2,y+2)
     #a = np.zeros((3,3), dtype=int)
-    move_def[x+1,y+1] = 1  # tail is 1,1
-    print(move_def)
-    return
+    #move_def[x+2,y+2] = 1  
+    #print(move_def)
+    #print()
+    #move_def[x+2,y+2] = 0
+    return move_def[x+2,y+2] # tail is "on" 2,2
     #print('check_t', pos_h, pos_t)
     if (x-1)<=pos_t[0] and pos_t[0]<=(x+1) and (y-1)<=pos_t[1] and pos_t[1]<=(y+1):
         return 'F' # no move
@@ -83,9 +96,10 @@ def move(rope, dir):
         pos_t = rope[i]
         #print(pos_h, pos_t)
         #print(check_t(pos_h, pos_t))
-        check = check_t(pos_h, pos_t)
-        if check=='T': # Follow the old rope.
-            rope[i] = old_rope[i-1]
+        x, y = check_t(pos_h, pos_t)
+        rope[i] = (pos_t[0]+x, pos_t[1]+y)
+        """ if check=='T': # Follow the old rope.
+            rope[i] = 
         elif check =='UL':
             rope[i] = (pos_t[0]-1, pos_t[1]-1)
         elif check =='UR':
@@ -93,11 +107,11 @@ def move(rope, dir):
         elif check =='LL':
             rope[i] = (pos_t[0]+1, pos_t[1]-1)
         elif check =='LR':
-            rope[i] = (pos_t[0]+1, pos_t[1]+1)
+            rope[i] = (pos_t[0]+1, pos_t[1]+1)"""
 
 
     # Update final tail history
-    d_t_hist[rope[-1]] = 1
+    d_t_hist[rope[i]] = 1
 
     return rope
 
@@ -109,22 +123,22 @@ rope = [start for _ in range(rope_length)]
 #pos_t = starts
 d_t_hist = {}
 
-check_t((2,3), (2,2))
-exit()
+
+
 j = 0
 for dir, nr in data:
-    print(dir, nr)
+    #print(dir, nr)
     for i in range(int(nr)):
         rope = move(rope, dir)
-    print(rope)
-    vizulize(rope, grid_size)
+    #print(rope)
+    #vizulize(rope, grid_size)
     
-    if j==1:
-        break
-    j += 1
+    # if j==1:
+    #     break
+    # j += 1
     
     
 #print(rope)
 print('---')
 print('Nr pos for t:', len(d_t_hist))
-print(d_t_hist)
+#print(d_t_hist)
