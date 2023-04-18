@@ -6,7 +6,7 @@ int main() {
     int test2;
     test2 = 10;
     // print number
-    printf("%d", test2);
+    printf("%d\n", test2);
     return 0;
 }
 
