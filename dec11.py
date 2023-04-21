@@ -36,21 +36,27 @@ for i in range(nr_monkeys):
     for j in range(len(items[i])):
         print(f'{names[i]} has {items[i][j]}')
         # inpection, perfrom oper
+        item = items[i].pop(0)
         if opers[i]=='+':
-            items[i][j] = int(items[i][j]) + int(numbers[i])
+            item = int(item) + int(numbers[i])
         elif opers[i]=='*':
-            items[i][j] = int(items[i][j]) * int(numbers[i])
+            item = int(item) * int(numbers[i])
         else:
             print('Unknown operator')
         # devide by 3
-        items[i][j] = int( items[i][j] / 3 )
+        item = int( item / 3 )
         # check diversible by divers
-        if items[i][j] % int(divers[i]) == 0:
+        if item % int(divers[i]) == 0:
             # do true throw
             print('throw to (true)', true_throws[i])
+            to = true_throws[i]
+            items[to].append(item)
+            print('items', items[to])
         else:
             # do false throw
             print('throw to', false_throws[i])
 
 
     break
+
+print(items)
